@@ -8,22 +8,18 @@ def isWinner(x, nums):
     if not nums or x < 1:
         return None
     n = max(nums)
-    primes = [False, False] + [True for i in range(n - 1)]
+    primes = [True for _ in range(n + 1)]
+    primes[0] = primes[1] = False
     for i in range(2, int(n ** 0.5) + 1):
         if primes[i]:
             for j in range(i * i, n + 1, i):
                 primes[j] = False
-    primes = [i for i, prime in enumerate(primes) if prime]
-    m = len(primes)
-    scores = [0, 0]
-    for i in range(1, m + 1):
-        scores[0] += 1
-        if i == m or primes[i] > n:
-            break
-    for i in range(1, m + 1):
-        scores[1] += 1
-        if i == m or primes[i] > n:
-            break
-    if scores[0] == scores[1]:
-        return None
-    return "Ben" if scores[0] > scores[1] else "Maria"
+    primes = [i for i, p in enumerate(primes) if p]
+    primes = primes[1:]
+    c = 0
+    for i in nums:
+        if i in primes:
+            c += 1
+        if c == x:
+            return "Maria"
+    return "Ben"
